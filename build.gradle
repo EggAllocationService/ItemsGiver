@@ -5,6 +5,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id("xyz.jpenilla.run-paper") version "2.0.0"
 }
 
 repositories {
@@ -41,4 +42,10 @@ publishing {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+tasks {
+    runServer {
+        minecraftVersion("1.19.2")
+        systemProperty("com.mojang.eula.agree", "true")
+    }
 }
