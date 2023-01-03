@@ -1,0 +1,9 @@
+name: ItemsGiver
+version: '${project.version}'
+main: dev.cabotmc.itemsgiver.ItemsGiver
+api-version: 1.19
+authors: [NoaHolly]
+commands:
+  toggleitems:
+    usage: "/toggleitems"
+    description: "Lets you toggle getting items on a ten second timer"
