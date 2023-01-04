@@ -1,5 +1,9 @@
 package dev.cabotmc.itemsgiver;
 
+import dev.cabotmc.itemsgiver.commands.SetTimeCommand;
+import dev.cabotmc.itemsgiver.giver.BossBarManager;
+import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.CommandAPIConfig;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -24,15 +28,21 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
     public static NamespacedKey GIVE_ITEMS_TAG = new NamespacedKey("cabot", "give_items");
     public static ItemsGiver instance;
     @Override
+    public void onLoad() {
+        CommandAPI.onLoad(new CommandAPIConfig());
+
+    }
+    @Override
     public void onEnable() {
         instance = this;
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::updateBar, 0L, 20L);
+        CommandAPI.onEnable(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::secondPassed, 0L, 20L);
         possibleItems = Arrays.stream(Material.values())
                 .filter(Material::isItem)
                 .toList();
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new TotemListener(), this);
-        getCommand("toggleitems").setExecutor(new ToggleGivingCommand());
+        SetTimeCommand.register();
     }
 
     @Override
@@ -45,7 +55,7 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
             e.getPlayer().getPersistentDataContainer().set(GIVE_ITEMS_TAG, PersistentDataType.BYTE, (byte) 1);
         }
         if (e.getPlayer().getPersistentDataContainer().getOrDefault(GIVE_ITEMS_TAG, PersistentDataType.BYTE, (byte) 1) == 1) {
-            e.getPlayer().showBossBar(progressBar);
+            e.getPlayer().showBossBar(BossBarManager.getPrefs(e.getPlayer()).getBossBar());
         }
         Team team = this.getServer().getScoreboardManager().getMainScoreboard().getTeam("players");
         if (team == null) {
@@ -76,6 +86,7 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
     public void secondPassed() {
         for (Player player : this.getServer().getOnlinePlayers()) {
             if (player.getGameMode() != GameMode.SURVIVAL) continue;
+            if (!(BossBarManager.getPrefs(player).tick())) continue;
             if (player.getPersistentDataContainer().getOrDefault(GIVE_ITEMS_TAG, PersistentDataType.BYTE, (byte) 1) == 0) {
                 continue;
             }

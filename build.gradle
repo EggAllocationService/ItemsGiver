@@ -6,6 +6,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id("xyz.jpenilla.run-paper") version "2.0.0"
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 repositories {
@@ -21,10 +22,21 @@ repositories {
     maven {
         url = uri('https://repo.maven.apache.org/maven2/')
     }
+    maven { url = "https://repo.codemc.org/repository/maven-public/" }
 }
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT'
+    implementation "dev.jorel:commandapi-shade:8.7.0"
+}
+
+shadowJar {
+    dependencies {
+        include dependency("dev.jorel:commandapi-shade:8.7.0")
+    }
+
+
+    relocate("dev.jorel.commandapi", "dev.cabotmc.itemsgiver.commandapi")
 }
 
 group = 'dev.cabotmc'
