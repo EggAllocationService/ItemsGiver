@@ -18,7 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public final class ItemsGiver extends JavaPlugin implements Listener {

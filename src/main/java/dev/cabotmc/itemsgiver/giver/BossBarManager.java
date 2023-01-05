@@ -36,7 +36,7 @@ public class BossBarManager {
         }
         public void setMaxTime(int max) {
             maxTime = max;
-            playerBar.name(Component.text("Get a new item every 5 seconds!"));
+            playerBar.name(Component.text("Get a new item every " + max + " seconds!"));
         }
         public BossBar getBossBar() {
             return playerBar;

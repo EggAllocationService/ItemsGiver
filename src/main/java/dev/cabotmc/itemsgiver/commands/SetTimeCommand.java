@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class SetTimeCommand {
+
     public static void execute(CommandSender sender, Object[] args) {
         if (!(sender instanceof Player)) return;
         var player = (Player) sender;
