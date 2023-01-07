@@ -6,6 +6,7 @@ import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,6 +27,7 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
     public static NamespacedKey HAS_GONE_END_TAG = new NamespacedKey("cabot", "has_entered_end");
     public static NamespacedKey GIVE_ITEMS_TAG = new NamespacedKey("cabot", "give_items");
     public static ItemsGiver instance;
+    public static Team spectatorTeam;
     @Override
     public void onLoad() {
         CommandAPI.onLoad(new CommandAPIConfig());
@@ -42,6 +44,16 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new TotemListener(), this);
         SetTimeCommand.register();
+        spectatorTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators");
+        if (spectatorTeam == null) {
+            spectatorTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("spectators");
+            spectatorTeam.setCanSeeFriendlyInvisibles(true);
+            spectatorTeam.color(NamedTextColor.DARK_GRAY);
+            spectatorTeam.setAllowFriendlyFire(false);
+            spectatorTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+
+        }
+
     }
 
     @Override
