@@ -22,6 +22,9 @@ public class GamesManager implements Listener {
     }
     static int readyCount = 0;
     static GameState state = GameState.WAITING;
+
+
+
     @EventHandler
     public void hit() {
 
@@ -30,6 +33,7 @@ public class GamesManager implements Listener {
     public void tick(ServerTickStartEvent e) {
         if (state == GameState.WAITING && Bukkit.getOnlinePlayers().size() > 1 && readyCount == Bukkit.getOnlinePlayers().size()) {
 
+            startGame();
         }
     }
     @EventHandler
@@ -40,7 +44,8 @@ public class GamesManager implements Listener {
         }
     }
 
-    public void startGame() {
+    public static void startGame() {
+        state = GameState.PLAYING;
         Bukkit.getServer().sendMessage(Component.text("Sending "));
         for (var p : Bukkit.getOnlinePlayers()) {
             var targetX = ThreadLocalRandom.current().nextInt(50, 150) * (Math.random() > 0.5 ? -1 : 1);
@@ -50,8 +55,24 @@ public class GamesManager implements Listener {
             var targetloc = p.getLocation().set(targetX, 66, targetZ);
             p.teleport(targetloc);
             p.setGameMode(GameMode.SURVIVAL);
-
         }
+        var mainWorld = Bukkit.getWorld("world");
+        // fill middle with air
+        for (int x = -10; x < 11; x++) {
+            for (int y = -10; y < 11; y++) {
+                for (int z = -10; z < 11; z++) {
+                    mainWorld.setBlockData(x, y, z, Material.AIR.createBlockData());
+                }
+            }
+        }
+
+        // make 5x5 bedrock platform
+        for (int x = -2; x < 3; x++) {
+                for (int z = -2; z < 3; z++) {
+                    mainWorld.setBlockData(x, 64, z, Material.BEDROCK.createBlockData());
+                }
+        }
+
     }
 
     public void enableSpectating(Player p) {

@@ -1,6 +1,7 @@
 package dev.cabotmc.itemsgiver;
 
 import dev.cabotmc.itemsgiver.commands.SetTimeCommand;
+import dev.cabotmc.itemsgiver.commands.StartCommand;
 import dev.cabotmc.itemsgiver.giver.BossBarManager;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
@@ -43,7 +44,9 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
                 .toList();
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new TotemListener(), this);
+        Bukkit.getPluginManager().registerEvents(new GamesManager(), this);
         SetTimeCommand.register();
+        StartCommand.register();
         spectatorTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("spectators");
         if (spectatorTeam == null) {
             spectatorTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("spectators");
@@ -98,9 +101,7 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
         for (Player player : this.getServer().getOnlinePlayers()) {
             if (player.getGameMode() != GameMode.SURVIVAL) continue;
             if (!(BossBarManager.getPrefs(player).tick())) continue;
-            if (player.getPersistentDataContainer().getOrDefault(GIVE_ITEMS_TAG, PersistentDataType.BYTE, (byte) 1) == 0) {
-                continue;
-            }
+
             int pos = this.possibleItems.size() - 1;
             pos = (int)Math.floor(Math.random() * (double)pos);
             Material material = this.possibleItems.get(pos);
@@ -109,7 +110,7 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
             if (!results.isEmpty()) {
                 player.getWorld().dropItem(player.getLocation(), item);
             }
-            player.playSound(player.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 0.8f, 1.0f);
+            player.playSound(player.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 0.6f, 1.0f);
         }
     }
 }
