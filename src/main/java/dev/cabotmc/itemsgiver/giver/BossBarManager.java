@@ -24,7 +24,7 @@ public class BossBarManager {
         public boolean tick() {
             currentTime++;
             playerBar.progress(progress());
-            if (currentTime == maxTime) {
+            if (currentTime >= maxTime) {
                 currentTime = 0;
                 return true;
             } else {
