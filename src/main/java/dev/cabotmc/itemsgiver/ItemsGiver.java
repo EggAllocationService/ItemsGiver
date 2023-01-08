@@ -79,15 +79,7 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
         }
         team.addEntity(e.getPlayer());
     }
-    public void updateBar() {
-        var newProgress = progressBar.progress() + 0.1f;
-        if (newProgress > 1) newProgress = 1;
-        progressBar.progress(newProgress);
-        if (progressBar.progress() >= 1) {
-            progressBar.progress(0);
-            secondPassed();
-        }
-    }
+
     @EventHandler
     public void endTravel(PlayerPortalEvent e) {
         if (e.getTo().getWorld().getEnvironment() == World.Environment.THE_END && e.getFrom().getWorld().getEnvironment() != World.Environment.THE_END) {
