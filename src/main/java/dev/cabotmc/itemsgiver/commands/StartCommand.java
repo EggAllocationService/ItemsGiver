@@ -14,9 +14,9 @@ public class StartCommand {
     }
 
     public static void register() {
-        new CommandAPICommand("itemdelay")
+        new CommandAPICommand("start")
                 .withPermission("skyuhc.start")
-                .executes(SetTimeCommand::execute)
+                .executes(StartCommand::execute)
                 .register();
     }
 }

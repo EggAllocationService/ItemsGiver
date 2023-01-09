@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -20,7 +21,7 @@ import java.util.UUID;
 public class TotemListener implements Listener {
     public HashMap<UUID, Location> safeLocations = new HashMap<>();
     public HashMap<UUID, Long> lastSaveTimes = new HashMap<UUID, Long>();
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void totem(PlayerDeathEvent e) {
         if (e.getEntity().getLocation().getY() > 0) return;
         EquipmentSlot heldTotem;

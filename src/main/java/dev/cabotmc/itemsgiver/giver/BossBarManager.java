@@ -32,7 +32,11 @@ public class BossBarManager {
             }
         }
         public float progress() {
-            return currentTime / ((float) maxTime);
+            var calc = currentTime / ((float) maxTime);
+            if (calc > 1) {
+                calc = 1f;
+            }
+            return calc;
         }
         public void setMaxTime(int max) {
             maxTime = max;

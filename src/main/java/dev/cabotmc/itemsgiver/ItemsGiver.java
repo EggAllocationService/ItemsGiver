@@ -56,7 +56,12 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
             spectatorTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
 
         }
-
+        var w = Bukkit.getWorld("world");
+        w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        w.setGameRule(GameRule.RANDOM_TICK_SPEED, 600);
+        w.getWorldBorder().setCenter(0, 0);
+        w.getWorldBorder().setSize(300);
+        w.getWorldBorder().setWarningTime(30);
     }
 
     @Override
@@ -74,8 +79,8 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
         Team team = this.getServer().getScoreboardManager().getMainScoreboard().getTeam("players");
         if (team == null) {
             team = this.getServer().getScoreboardManager().getMainScoreboard().registerNewTeam("players");
-            team.setAllowFriendlyFire(false);
             team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.FOR_OWN_TEAM);
+
         }
         team.addEntity(e.getPlayer());
     }
@@ -102,6 +107,7 @@ public final class ItemsGiver extends JavaPlugin implements Listener {
             if (!results.isEmpty()) {
                 player.getWorld().dropItem(player.getLocation(), item);
             }
+
             player.playSound(player.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 0.6f, 1.0f);
         }
     }
